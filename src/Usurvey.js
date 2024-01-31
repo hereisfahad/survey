@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-var firebase = require("firebase");
-var uuid = require("uuid");
+import React, { Component } from 'react';
+var firebase = require('firebase');
+var uuid = require('uuid');
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "AIzaSyA7ezL6RXwwB4HblfUS6BbIKBb20oPrUog",
-  authDomain: "usurvey-93cb2.firebaseapp.com",
-  databaseURL: "https://usurvey-93cb2.firebaseio.com",
-  projectId: "usurvey-93cb2",
-  storageBucket: "usurvey-93cb2.appspot.com",
-  messagingSenderId: "276010509382",
-  appId: "1:276010509382:web:76f7e99db1537f4faed647"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_API_ID,
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -18,21 +18,21 @@ firebase.initializeApp(firebaseConfig);
 class Usurvey extends Component {
   nameSubmit(event) {
     var studentName = this.refs.name.value;
-    this.setState({ studentName: studentName }, function() {
+    this.setState({ studentName: studentName }, function () {
       console.log(this.state);
     });
   }
   answerSelected(event) {
     var answers = this.state.answers;
-    if (event.target.name === "answer1") {
+    if (event.target.name === 'answer1') {
       answers.answer1 = event.target.value;
-    } else if (event.target.name === "answer2") {
+    } else if (event.target.name === 'answer2') {
       answers.answer2 = event.target.value;
-    } else if (event.target.name === "answer3") {
+    } else if (event.target.name === 'answer3') {
       answers.answer3 = event.target.value;
     }
 
-    this.setState({ answers: answers }, function() {
+    this.setState({ answers: answers }, function () {
       console.log(this.state);
     });
   }
@@ -40,10 +40,10 @@ class Usurvey extends Component {
   questionSubmit() {
     firebase
       .database()
-      .ref("uSurvey/" + this.state.uid)
+      .ref('uSurvey/' + this.state.uid)
       .set({
         studentName: this.state.studentName,
-        answers: this.state.answers
+        answers: this.state.answers,
       });
     this.setState({ isSubmitted: true });
   }
@@ -53,13 +53,13 @@ class Usurvey extends Component {
 
     this.state = {
       uid: uuid.v1(),
-      studentName: "",
+      studentName: '',
       answers: {
-        answer1: "",
-        answer2: "",
-        answer3: ""
+        answer1: '',
+        answer2: '',
+        answer3: '',
       },
-      isSubmitted: false
+      isSubmitted: false,
     };
     this.nameSubmit = this.nameSubmit.bind(this);
     this.answerSelected = this.answerSelected.bind(this);
@@ -70,7 +70,7 @@ class Usurvey extends Component {
     var studentName;
     var questions;
 
-    if (this.state.studentName === "" && this.state.isSubmitted === false) {
+    if (this.state.studentName === '' && this.state.isSubmitted === false) {
       studentName = (
         <div>
           <h1>Hey Student, please let us know your name: </h1>
@@ -84,9 +84,9 @@ class Usurvey extends Component {
           </form>
         </div>
       );
-      questions = "";
+      questions = '';
     } else if (
-      this.state.studentName !== "" &&
+      this.state.studentName !== '' &&
       this.state.isSubmitted === false
     ) {
       studentName = <h1>Welcome to U-Survey, {this.state.studentName}</h1>;
